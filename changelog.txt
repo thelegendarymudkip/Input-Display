@@ -5,3 +5,10 @@ v1.1
 -Images tidied up into a resources folder
 -Reads a background colour from settings.txt
 -Throws a MessageBox alerting the user if a resource cannot be opened.
+
+Future Releases
+-Support for other controller ports.
+-Support for multiple controllers at once.
+-Support for different controller types.
+-Update background colour and controller port while running the program.
+-Change the background colour from a frontend instead of file.
