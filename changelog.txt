@@ -9,6 +9,9 @@ v1.1
 v1.1.1
 -Support for use of any controller port from 0 to 7 added.
 
+v1.1.2
+-Fixed bug where program crashes if a controller isn't plugged in.
+
 Future Releases
 -Support for multiple controllers at once.
 -Support for different controller types.
