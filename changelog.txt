@@ -1,0 +1,7 @@
+v1.0
+-SNES Controller support added
+
+v1.1
+-Images tidied up into a resources folder
+-Reads a background colour from settings.txt
+-Throws a MessageBox alerting the user if a resource cannot be opened.
