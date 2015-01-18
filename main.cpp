@@ -7,11 +7,13 @@ sf::Texture cTexture, ssPos, lrPos;
 sf::RectangleShape dUp(sf::Vector2f(20, 21)), dDown(sf::Vector2f(21, 21)), dLeft(sf::Vector2f(21, 21)), dRight(sf::Vector2f(21, 21))/*, bL(sf::Vector2f(5, 55)), bR(sf::Vector2f(5, 55)), bSel(sf::Vector2f(12, 30)), bSt(sf::Vector2f(12, 30))*/;
 sf::CircleShape bA(15), bB(15), bX(15), bY(15);
 std::ifstream bg;
+sf::Clock ubgTimer;
 float dX, dY;
 bool l, r, left, right, up, down, a, b, x, y, sel, st;
 short unsigned int intR, intG, intB, i, controllerPort;
 std::string line;
-void initWindow()
+
+void updateBG()
 {
 	bg.open("settings.txt");
 	if (bg.is_open())
@@ -34,6 +36,11 @@ void initWindow()
 		controllerPort = 0;
 		MessageBox(NULL, (LPCWSTR)L"Settings.txt not found, using defaults.", (LPCWSTR)L"Resource Missing", MB_ICONEXCLAMATION);
 	}
+}
+
+void initWindow()
+{
+	updateBG();
 	sf::ContextSettings settings;
 	window.create(sf::VideoMode(400,177),"SNES Input Display", sf::Style::Close);
 	if (!cTexture.loadFromFile("resources/controller.png"))
@@ -202,6 +209,11 @@ int main()
 			// "close requested" event: we close the window
 			if (event.type == sf::Event::Closed)
 				window.close();
+		}
+		if (ubgTimer.getElapsedTime() > sf::milliseconds(750))
+		{
+			updateBG();
+			ubgTimer.restart();
 		}
 		getInput();
 		displayInput();
