@@ -6,8 +6,10 @@ v1.1
 -Reads a background colour from settings.txt
 -Throws a MessageBox alerting the user if a resource cannot be opened.
 
+v1.1.1
+-Support for use of any controller port from 0 to 7 added.
+
 Future Releases
--Support for other controller ports.
 -Support for multiple controllers at once.
 -Support for different controller types.
 -Update background colour and controller port while running the program.

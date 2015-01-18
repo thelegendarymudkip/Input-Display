@@ -9,7 +9,7 @@ sf::CircleShape bA(15), bB(15), bX(15), bY(15);
 std::ifstream bg;
 float dX, dY;
 bool l, r, left, right, up, down, a, b, x, y, sel, st;
-short unsigned int intR, intG, intB, i;
+short unsigned int intR, intG, intB, i, controllerPort;
 std::string line;
 void initWindow()
 {
@@ -22,6 +22,8 @@ void initWindow()
 		intG = intG & 255; //mod 256
 		bg >> intB;
 		intB = intB & 255; //mod 256
+		bg >> controllerPort;
+		controllerPort = controllerPort & 7; //mod 8
 		bg.close();
 	}
 	else
@@ -29,6 +31,7 @@ void initWindow()
 		intR = 255;
 		intG = 255;
 		intB = 255;
+		controllerPort = 0;
 		MessageBox(NULL, (LPCWSTR)L"Settings.txt not found, using defaults.", (LPCWSTR)L"Resource Missing", MB_ICONEXCLAMATION);
 	}
 	sf::ContextSettings settings;
@@ -79,16 +82,16 @@ void initWindow()
 
 void getInput()
 {
-	x = sf::Joystick::isButtonPressed(0, 0);
-	a = sf::Joystick::isButtonPressed(0, 1);
-	b = sf::Joystick::isButtonPressed(0, 2);
-	y = sf::Joystick::isButtonPressed(0, 3);
-	l = sf::Joystick::isButtonPressed(0, 6);
-	r = sf::Joystick::isButtonPressed(0, 7);
-	sel = sf::Joystick::isButtonPressed(0, 8);
-	st = sf::Joystick::isButtonPressed(0, 9);
-	dX = sf::Joystick::getAxisPosition(0, sf::Joystick::X);
-	dY = sf::Joystick::getAxisPosition(0, sf::Joystick::Y);
+	x = sf::Joystick::isButtonPressed(controllerPort, 0);
+	a = sf::Joystick::isButtonPressed(controllerPort, 1);
+	b = sf::Joystick::isButtonPressed(controllerPort, 2);
+	y = sf::Joystick::isButtonPressed(controllerPort, 3);
+	l = sf::Joystick::isButtonPressed(controllerPort, 6);
+	r = sf::Joystick::isButtonPressed(controllerPort, 7);
+	sel = sf::Joystick::isButtonPressed(controllerPort, 8);
+	st = sf::Joystick::isButtonPressed(controllerPort, 9);
+	dX = sf::Joystick::getAxisPosition(controllerPort, sf::Joystick::X);
+	dY = sf::Joystick::getAxisPosition(controllerPort, sf::Joystick::Y);
 }
 
 void displayInput()
