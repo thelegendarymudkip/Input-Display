@@ -95,6 +95,19 @@ void getInput()
 		dX = sf::Joystick::getAxisPosition(controllerPort, sf::Joystick::X);
 		dY = sf::Joystick::getAxisPosition(controllerPort, sf::Joystick::Y);
 	}
+	else
+	{
+		x = false;
+		a = false;
+		b = false;
+		y = false;
+		l = false;
+		r = false;
+		sel = false;
+		st = false;
+		dX = 0;
+		dY = 0;
+	}
 }
 
 void displayInput()

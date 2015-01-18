@@ -12,6 +12,9 @@ v1.1.1
 v1.1.2
 -Fixed bug where program crashes if a controller isn't plugged in.
 
+v1.1.3
+-Fixed bug where input is kept when unplugging a controller with buttons held down.
+
 Future Releases
 -Support for multiple controllers at once.
 -Support for different controller types.
