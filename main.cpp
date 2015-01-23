@@ -29,10 +29,6 @@ void updateBG()
 		intB = intB & 255; //mod 256
 		bg >> controllerPort;
 		controllerPort = controllerPort & 7; //mod 8
-		bg >> windowPosition.x;
-		windowPosition.x = windowPosition.x % desktop.width;
-		bg >> windowPosition.y;
-		windowPosition.y = windowPosition.y % desktop.height;
 		bg.close();
 	}
 	else
@@ -49,7 +45,7 @@ void initWindow()
 {
 	updateBG();
 	sf::ContextSettings settings;
-	window.create(sf::VideoMode(400,177),"SNES Input Display", sf::Style::Close);
+	window.create(sf::VideoMode(400, 177), "SNES Input Display", sf::Style::Close);
 	if (!cTexture.loadFromFile("resources/controller.png"))
 	{
 		MessageBox(NULL, (LPCWSTR)L"controller.png not found.", (LPCWSTR)L"Resource Missing", MB_ICONEXCLAMATION);
@@ -94,12 +90,38 @@ void initWindow()
 	bR.setScale(-1, 1);
 
 	window.setPosition(windowPosition);
+	desktop = sf::VideoMode::getDesktopMode();
+	bg.open("settings.txt");
+	if (bg.is_open())
+	{
+		bg >> intR;
+		intR = intR & 255; //mod 256
+		bg >> intG;
+		intG = intG & 255; //mod 256
+		bg >> intB;
+		intB = intB & 255; //mod 256
+		bg >> controllerPort;
+		controllerPort = controllerPort & 7; //mod 8
+		bg >> windowPosition.x;
+		windowPosition.x = windowPosition.x % desktop.width;
+		bg >> windowPosition.y;
+		windowPosition.y = windowPosition.y % desktop.height;
+		bg.close();
+	}
+	else
+	{
+		intR = 255;
+		intG = 255;
+		intB = 255;
+		controllerPort = 0;
+		MessageBox(NULL, (LPCWSTR)L"Settings.txt not found, using defaults.", (LPCWSTR)L"Resource Missing", MB_ICONEXCLAMATION);
+	}
 }
 
 void getInput()
 {
 	if (sf::Joystick::isConnected(controllerPort))
-	{ 
+	{
 		x = sf::Joystick::isButtonPressed(controllerPort, 0);
 		a = sf::Joystick::isButtonPressed(controllerPort, 1);
 		b = sf::Joystick::isButtonPressed(controllerPort, 2);
@@ -168,7 +190,7 @@ void displayInput()
 	else
 		bSt.setColor(sf::Color(255, 255, 255, 0));
 
-	if (dX <=-1)
+	if (dX <= -1)
 		dLeft.setFillColor(sf::Color(255, 0, 0, 255));
 	else
 		dLeft.setFillColor(sf::Color(255, 0, 0, 0));
@@ -217,8 +239,10 @@ int main()
 		{
 			// "close requested" event: we close the window
 			if (event.type == sf::Event::Closed)
+			{
 				windowPosition = window.getPosition();
 				window.close();
+			}
 		}
 		if (ubgTimer.getElapsedTime() > sf::milliseconds(750))
 		{

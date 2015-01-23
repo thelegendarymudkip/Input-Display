@@ -21,6 +21,9 @@ v1.1.4
 v1.1.5
 -Window position remembered on change.
 
+v1.1.5.1
+-Fixed bug where program closes on receiving an event.
+
 Future Releases
 -Support for multiple controllers at once.
 -Support for different controller types.
