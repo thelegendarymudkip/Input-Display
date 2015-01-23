@@ -19,10 +19,13 @@ v1.1.4
 -You can now change background colour and controller port while the program is running.
 
 v1.1.5
--Window position remembered on change.
+-Window position remembered on close.
 
 v1.1.5.1
 -Fixed bug where program closes on receiving an event.
+
+v1.1.5.2
+-Fixed bug where program fails to write window position on close.
 
 Future Releases
 -Support for multiple controllers at once.

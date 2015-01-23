@@ -7,6 +7,7 @@ sf::Texture cTexture, ssPos, lrPos;
 sf::RectangleShape dUp(sf::Vector2f(20, 21)), dDown(sf::Vector2f(21, 21)), dLeft(sf::Vector2f(21, 21)), dRight(sf::Vector2f(21, 21))/*, bL(sf::Vector2f(5, 55)), bR(sf::Vector2f(5, 55)), bSel(sf::Vector2f(12, 30)), bSt(sf::Vector2f(12, 30))*/;
 sf::CircleShape bA(15), bB(15), bX(15), bY(15);
 std::ifstream bg;
+std::ofstream keep;
 sf::Clock ubgTimer;
 sf::Vector2i windowPosition;
 sf::VideoMode desktop;
@@ -45,7 +46,7 @@ void initWindow()
 {
 	updateBG();
 	sf::ContextSettings settings;
-	window.create(sf::VideoMode(400, 177), "SNES Input Display", sf::Style::Close);
+	window.create(sf::VideoMode(400,177),"SNES Input Display", sf::Style::Close);
 	if (!cTexture.loadFromFile("resources/controller.png"))
 	{
 		MessageBox(NULL, (LPCWSTR)L"controller.png not found.", (LPCWSTR)L"Resource Missing", MB_ICONEXCLAMATION);
@@ -89,7 +90,6 @@ void initWindow()
 	bR.setOrigin(25, 2);
 	bR.setScale(-1, 1);
 
-	window.setPosition(windowPosition);
 	desktop = sf::VideoMode::getDesktopMode();
 	bg.open("settings.txt");
 	if (bg.is_open())
@@ -116,12 +116,13 @@ void initWindow()
 		controllerPort = 0;
 		MessageBox(NULL, (LPCWSTR)L"Settings.txt not found, using defaults.", (LPCWSTR)L"Resource Missing", MB_ICONEXCLAMATION);
 	}
+	window.setPosition(windowPosition);
 }
 
 void getInput()
 {
 	if (sf::Joystick::isConnected(controllerPort))
-	{
+	{ 
 		x = sf::Joystick::isButtonPressed(controllerPort, 0);
 		a = sf::Joystick::isButtonPressed(controllerPort, 1);
 		b = sf::Joystick::isButtonPressed(controllerPort, 2);
@@ -190,7 +191,7 @@ void displayInput()
 	else
 		bSt.setColor(sf::Color(255, 255, 255, 0));
 
-	if (dX <= -1)
+	if (dX <=-1)
 		dLeft.setFillColor(sf::Color(255, 0, 0, 255));
 	else
 		dLeft.setFillColor(sf::Color(255, 0, 0, 0));
@@ -241,6 +242,13 @@ int main()
 			if (event.type == sf::Event::Closed)
 			{
 				windowPosition = window.getPosition();
+				keep.open("settings.txt");
+				keep << intR << "\n";
+				keep << intG << "\n";
+				keep << intB << "\n";
+				keep << controllerPort << "\n";
+				keep << windowPosition.x << "\n";
+				keep << windowPosition.y << "\n";
 				window.close();
 			}
 		}
