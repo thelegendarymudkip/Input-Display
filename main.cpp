@@ -8,6 +8,8 @@ sf::RectangleShape dUp(sf::Vector2f(20, 21)), dDown(sf::Vector2f(21, 21)), dLeft
 sf::CircleShape bA(15), bB(15), bX(15), bY(15);
 std::ifstream bg;
 sf::Clock ubgTimer;
+sf::Vector2i windowPosition;
+sf::VideoMode desktop;
 float dX, dY;
 bool l, r, left, right, up, down, a, b, x, y, sel, st;
 short unsigned int intR, intG, intB, i, controllerPort;
@@ -15,6 +17,7 @@ std::string line;
 
 void updateBG()
 {
+	desktop = sf::VideoMode::getDesktopMode();
 	bg.open("settings.txt");
 	if (bg.is_open())
 	{
@@ -26,6 +29,10 @@ void updateBG()
 		intB = intB & 255; //mod 256
 		bg >> controllerPort;
 		controllerPort = controllerPort & 7; //mod 8
+		bg >> windowPosition.x;
+		windowPosition.x = windowPosition.x % desktop.width;
+		bg >> windowPosition.y;
+		windowPosition.y = windowPosition.y % desktop.height;
 		bg.close();
 	}
 	else
@@ -85,6 +92,8 @@ void initWindow()
 	bR.setTexture(lrPos);
 	bR.setOrigin(25, 2);
 	bR.setScale(-1, 1);
+
+	window.setPosition(windowPosition);
 }
 
 void getInput()
@@ -208,6 +217,7 @@ int main()
 		{
 			// "close requested" event: we close the window
 			if (event.type == sf::Event::Closed)
+				windowPosition = window.getPosition();
 				window.close();
 		}
 		if (ubgTimer.getElapsedTime() > sf::milliseconds(750))
