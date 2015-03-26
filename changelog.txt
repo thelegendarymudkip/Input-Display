@@ -27,6 +27,12 @@ v1.1.5.1
 v1.1.5.2
 -Fixed bug where program fails to write window position on close.
 
+v1.1.6
+-Fixed bug where file output stream doesn't close on window close.
+-Code spaced better for readability.
+-Tidied main loop up.
+-Lower CPU usage.
+
 Future Releases
 -Support for multiple controllers at once.
 -Support for different controller types.

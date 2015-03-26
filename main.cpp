@@ -1,70 +1,100 @@
 #include <SFML\Graphics.hpp>
 #include <fstream>
 #include <Windows.h>
+
 sf::RenderWindow window;
 sf::Sprite cSprite, bSel, bSt, bL, bR;
 sf::Texture cTexture, ssPos, lrPos;
-sf::RectangleShape dUp(sf::Vector2f(20, 21)), dDown(sf::Vector2f(21, 21)), dLeft(sf::Vector2f(21, 21)), dRight(sf::Vector2f(21, 21))/*, bL(sf::Vector2f(5, 55)), bR(sf::Vector2f(5, 55)), bSel(sf::Vector2f(12, 30)), bSt(sf::Vector2f(12, 30))*/;
+sf::RectangleShape dUp(sf::Vector2f(20, 21)), dDown(sf::Vector2f(21, 21)), dLeft(sf::Vector2f(21, 21)), dRight(sf::Vector2f(21, 21)), windowBox(sf::Vector2f(400, 177));
 sf::CircleShape bA(15), bB(15), bX(15), bY(15);
-std::ifstream bg;
-std::ofstream keep;
 sf::Clock ubgTimer;
 sf::Vector2i windowPosition;
 sf::VideoMode desktop;
+sf::Uint8 intR, intG, intB;
+
+std::ifstream bg;
+std::ofstream keep;
+
 float dX, dY;
 bool l, r, left, right, up, down, a, b, x, y, sel, st;
-short unsigned int intR, intG, intB, i, controllerPort;
-std::string line;
+short unsigned int i, controllerPort;
 
-void updateBG()
+
+void readSettings()
 {
 	desktop = sf::VideoMode::getDesktopMode();
 	bg.open("settings.txt");
+
 	if (bg.is_open())
 	{
+
 		bg >> intR;
 		intR = intR & 255; //mod 256
+
 		bg >> intG;
 		intG = intG & 255; //mod 256
+
 		bg >> intB;
 		intB = intB & 255; //mod 256
+
 		bg >> controllerPort;
 		controllerPort = controllerPort & 7; //mod 8
+
 		bg.close();
+
 	}
+
 	else
 	{
+
 		intR = 255;
 		intG = 255;
 		intB = 255;
+
 		controllerPort = 0;
+
 		MessageBox(NULL, (LPCWSTR)L"Settings.txt not found, using defaults.", (LPCWSTR)L"Resource Missing", MB_ICONEXCLAMATION);
+
 	}
+
 }
 
 void initWindow()
 {
-	updateBG();
+
+	readSettings();
+
 	sf::ContextSettings settings;
-	window.create(sf::VideoMode(400,177),"SNES Input Display", sf::Style::Close);
+	window.create(sf::VideoMode(400, 177), "SNES Input Display", sf::Style::Close);
+
 	if (!cTexture.loadFromFile("resources/controller.png"))
 	{
+
 		MessageBox(NULL, (LPCWSTR)L"controller.png not found.", (LPCWSTR)L"Resource Missing", MB_ICONEXCLAMATION);
+
 	}
+
 	if (!ssPos.loadFromFile("resources/ss.png"))
 	{
+
 		MessageBox(NULL, (LPCWSTR)L"ss.png not found.", (LPCWSTR)L"Resource Missing", MB_ICONEXCLAMATION);
+
 	}
+
 	if (!lrPos.loadFromFile("resources/LR.png"))
 	{
+
 		MessageBox(NULL, (LPCWSTR)L"lr.png not found.", (LPCWSTR)L"Resource Missing", MB_ICONEXCLAMATION);
+
 	}
+
 
 	dLeft.setPosition(51, 80);
 	dRight.setPosition(95, 80);
 	dUp.setPosition(74, 58);
 	dDown.setPosition(73, 102);
 	bSel.setPosition(144, 84);
+
 	bSt.setPosition(188, 84);
 	bY.setPosition(262, 75);
 	bA.setPosition(338, 75);
@@ -73,56 +103,81 @@ void initWindow()
 	bL.setPosition(78, 2);
 	bR.setPosition(295, 3);
 
+	windowBox.setPosition(0, 0);
+
 	dUp.setFillColor(sf::Color(255, 0, 0, 0));
 	dDown.setFillColor(sf::Color(255, 0, 0, 0));
 	dLeft.setFillColor(sf::Color(255, 0, 0, 0));
 	dRight.setFillColor(sf::Color(255, 0, 0, 0));
+
 	bA.setFillColor(sf::Color(127, 0, 0, 0));
 	bB.setFillColor(sf::Color(127, 127, 0, 0));
 	bX.setFillColor(sf::Color(0, 0, 127, 0));
 	bY.setFillColor(sf::Color(0, 127, 0, 0));
 
 	cSprite.setTexture(cTexture);
+
 	bSel.setTexture(ssPos);
 	bSt.setTexture(ssPos);
 	bL.setTexture(lrPos);
 	bR.setTexture(lrPos);
+
 	bR.setOrigin(25, 2);
 	bR.setScale(-1, 1);
 
 	desktop = sf::VideoMode::getDesktopMode();
+
 	bg.open("settings.txt");
+
 	if (bg.is_open())
 	{
+
 		bg >> intR;
 		intR = intR & 255; //mod 256
+
 		bg >> intG;
 		intG = intG & 255; //mod 256
+
 		bg >> intB;
 		intB = intB & 255; //mod 256
+
 		bg >> controllerPort;
 		controllerPort = controllerPort & 7; //mod 8
+
 		bg >> windowPosition.x;
 		windowPosition.x = windowPosition.x % desktop.width;
+
 		bg >> windowPosition.y;
 		windowPosition.y = windowPosition.y % desktop.height;
+
 		bg.close();
+
 	}
+
 	else
 	{
+
 		intR = 255;
 		intG = 255;
 		intB = 255;
+
 		controllerPort = 0;
+
 		MessageBox(NULL, (LPCWSTR)L"Settings.txt not found, using defaults.", (LPCWSTR)L"Resource Missing", MB_ICONEXCLAMATION);
+
 	}
+
 	window.setPosition(windowPosition);
+	window.setKeyRepeatEnabled(false);
+
 }
 
 void getInput()
 {
+
 	if (sf::Joystick::isConnected(controllerPort))
-	{ 
+	{
+
 		x = sf::Joystick::isButtonPressed(controllerPort, 0);
 		a = sf::Joystick::isButtonPressed(controllerPort, 1);
 		b = sf::Joystick::isButtonPressed(controllerPort, 2);
@@ -131,11 +186,26 @@ void getInput()
 		r = sf::Joystick::isButtonPressed(controllerPort, 7);
 		sel = sf::Joystick::isButtonPressed(controllerPort, 8);
 		st = sf::Joystick::isButtonPressed(controllerPort, 9);
-		dX = sf::Joystick::getAxisPosition(controllerPort, sf::Joystick::X);
-		dY = sf::Joystick::getAxisPosition(controllerPort, sf::Joystick::Y);
+
+		if (sf::Joystick::hasAxis(controllerPort, sf::Joystick::X))
+		{
+
+			dX = sf::Joystick::getAxisPosition(controllerPort, sf::Joystick::X);
+
+		}
+
+		if (sf::Joystick::hasAxis(controllerPort, sf::Joystick::Y))
+		{
+
+			dY = sf::Joystick::getAxisPosition(controllerPort, sf::Joystick::Y);
+
+		}
+
 	}
+
 	else
 	{
+
 		x = false;
 		a = false;
 		b = false;
@@ -144,13 +214,17 @@ void getInput()
 		r = false;
 		sel = false;
 		st = false;
+
 		dX = 0;
 		dY = 0;
+
 	}
+
 }
 
 void displayInput()
 {
+
 	if (x)
 		bX.setFillColor(sf::Color(0, 0, 127, 255));
 	else
@@ -191,7 +265,7 @@ void displayInput()
 	else
 		bSt.setColor(sf::Color(255, 255, 255, 0));
 
-	if (dX <=-1)
+	if (dX <= -1)
 		dLeft.setFillColor(sf::Color(255, 0, 0, 255));
 	else
 		dLeft.setFillColor(sf::Color(255, 0, 0, 0));
@@ -218,6 +292,7 @@ void displayInput()
 	window.draw(dDown);
 	window.draw(dLeft);
 	window.draw(dRight);
+
 	window.draw(bSel);
 	window.draw(bSt);
 	window.draw(bA);
@@ -228,37 +303,62 @@ void displayInput()
 	window.draw(bR);
 
 	window.display();
+
+}
+
+void writeSettings()
+{
+	windowPosition = window.getPosition();
+
+	keep.open("settings.txt");
+
+	keep << intR << "\n";
+	keep << intG << "\n";
+	keep << intB << "\n";
+	keep << controllerPort << "\n";
+	keep << windowPosition.x << "\n";
+	keep << windowPosition.y << "\n";
+
+	keep.close();
 }
 
 int main()
 {
+
 	initWindow();
+
 	while (window.isOpen())
 	{
+
 		sf::Event event;
+
 		while (window.pollEvent(event))
 		{
-			// "close requested" event: we close the window
+
 			if (event.type == sf::Event::Closed)
 			{
-				windowPosition = window.getPosition();
-				keep.open("settings.txt");
-				keep << intR << "\n";
-				keep << intG << "\n";
-				keep << intB << "\n";
-				keep << controllerPort << "\n";
-				keep << windowPosition.x << "\n";
-				keep << windowPosition.y << "\n";
+
+				writeSettings();
+
 				window.close();
+
 			}
+
 		}
-		if (ubgTimer.getElapsedTime() > sf::milliseconds(750))
+
+		if (ubgTimer.getElapsedTime() > sf::seconds(5))
 		{
-			updateBG();
+
+			readSettings();
 			ubgTimer.restart();
+
 		}
+
 		getInput();
 		displayInput();
+
 	}
+
 	return 0;
+
 }
