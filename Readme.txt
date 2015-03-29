@@ -1,4 +1,4 @@
----SNES Input Viewer v1.1.6---
+---SNES Input Viewer v1.2---
 -Created by TheLegendaryMudkip-
 
 SNES Input Viewer is a program that allows you to visualize the input from a SNES controller on your monitor.
@@ -17,5 +17,5 @@ You need to have your controller plugged in to a port from port 0 to port 7, whi
 The first line is the Red value of the background, which ranges from 0 to 255. The second line is the Green value of the background,
 , the third line is the Blue value of the background, and the fourth line is the controller port. Don't bother trying to overflow the colour data, a bitwise and
 operation with 255 (equivalent to a mod 256 operation) is performed on the RGB, values from the file, and a bitwise & operation
-with 7 (equivalent to a mod 8 operation) is performed on the controller port. The last two lines are the x and y of the window
-position, x first, y last.
+with 7 (equivalent to a mod 8 operation) is performed on the controller port. The next two lines are the x and y of the window
+position, x first, y last. The line after that is the refresh rate.

@@ -5,7 +5,7 @@
 sf::RenderWindow window;
 sf::Sprite cSprite, bSel, bSt, bL, bR;
 sf::Texture cTexture, ssPos, lrPos;
-sf::RectangleShape dUp(sf::Vector2f(20, 21)), dDown(sf::Vector2f(21, 21)), dLeft(sf::Vector2f(21, 21)), dRight(sf::Vector2f(21, 21)), windowBox(sf::Vector2f(400, 177));
+sf::RectangleShape dUp(sf::Vector2f(20, 21)), dDown(sf::Vector2f(21, 21)), dLeft(sf::Vector2f(21, 21)), dRight(sf::Vector2f(21, 21));
 sf::CircleShape bA(15), bB(15), bX(15), bY(15);
 sf::Clock ubgTimer;
 sf::Vector2i windowPosition;
@@ -17,7 +17,7 @@ std::ofstream keep;
 
 float dX, dY;
 bool l, r, left, right, up, down, a, b, x, y, sel, st;
-short unsigned int i, controllerPort;
+short unsigned int i, controllerPort, framesPerSecond;
 
 
 void readSettings()
@@ -39,6 +39,13 @@ void readSettings()
 
 		bg >> controllerPort;
 		controllerPort = controllerPort & 7; //mod 8
+
+		bg >> framesPerSecond;
+
+		if (framesPerSecond > 120 || framesPerSecond <= 0)
+		{
+			framesPerSecond = 60; //No, I'm not letting you run it that fast.
+		}
 
 		bg.close();
 
@@ -103,8 +110,6 @@ void initWindow()
 	bL.setPosition(78, 2);
 	bR.setPosition(295, 3);
 
-	windowBox.setPosition(0, 0);
-
 	dUp.setFillColor(sf::Color(255, 0, 0, 0));
 	dDown.setFillColor(sf::Color(255, 0, 0, 0));
 	dLeft.setFillColor(sf::Color(255, 0, 0, 0));
@@ -168,7 +173,7 @@ void initWindow()
 	}
 
 	window.setPosition(windowPosition);
-	window.setKeyRepeatEnabled(false);
+	window.setFramerateLimit(framesPerSecond);
 
 }
 
@@ -318,6 +323,7 @@ void writeSettings()
 	keep << controllerPort << "\n";
 	keep << windowPosition.x << "\n";
 	keep << windowPosition.y << "\n";
+	keep << framesPerSecond;
 
 	keep.close();
 }
@@ -343,14 +349,6 @@ int main()
 				window.close();
 
 			}
-
-		}
-
-		if (ubgTimer.getElapsedTime() > sf::seconds(5))
-		{
-
-			readSettings();
-			ubgTimer.restart();
 
 		}
 
