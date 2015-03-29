@@ -7,7 +7,6 @@ sf::Sprite cSprite, bSel, bSt, bL, bR;
 sf::Texture cTexture, ssPos, lrPos;
 sf::RectangleShape dUp(sf::Vector2f(20, 21)), dDown(sf::Vector2f(21, 21)), dLeft(sf::Vector2f(21, 21)), dRight(sf::Vector2f(21, 21));
 sf::CircleShape bA(15), bB(15), bX(15), bY(15);
-sf::Clock ubgTimer;
 sf::Vector2i windowPosition;
 sf::VideoMode desktop;
 
@@ -36,8 +35,14 @@ void readSettings()
 		bg >> intB;
 		intB = intB & 255; //mod 256
 
+		bg >> windowPosition.x;
+		windowPosition.x = windowPosition.x % desktop.width;
+
+		bg >> windowPosition.y;
+		windowPosition.y = windowPosition.y % desktop.height;
+
 		bg >> controllerPort;
-		controllerPort = controllerPort & 7; //mod 8
+		controllerPort = controllerPort & 7; //mod 8;
 
 		bg >> framesPerSecond;
 
@@ -132,46 +137,6 @@ void initWindow()
 	bR.setScale(-1, 1);
 
 	desktop = sf::VideoMode::getDesktopMode();
-
-	bg.open("settings.txt");
-
-	if (bg.is_open())
-	{
-
-		bg >> intR;
-		intR = intR & 255; //mod 256
-
-		bg >> intG;
-		intG = intG & 255; //mod 256
-
-		bg >> intB;
-		intB = intB & 255; //mod 256
-
-		bg >> controllerPort;
-		controllerPort = controllerPort & 7; //mod 8
-
-		bg >> windowPosition.x;
-		windowPosition.x = windowPosition.x % desktop.width;
-
-		bg >> windowPosition.y;
-		windowPosition.y = windowPosition.y % desktop.height;
-
-		bg.close();
-
-	}
-
-	else
-	{
-
-		intR = 255;
-		intG = 255;
-		intB = 255;
-
-		controllerPort = 0;
-
-		MessageBox(NULL, (LPCWSTR)L"Settings.txt not found, using defaults.", (LPCWSTR)L"Resource Missing", MB_ICONEXCLAMATION);
-
-	}
 
 	window.setPosition(windowPosition);
 	window.setFramerateLimit(framesPerSecond);

@@ -41,6 +41,10 @@ v1.2.0.1
 -Fixed bug where not having a settings file meant program ran as fast as possible.
 -Fixed bug where input file would get interpreted as a UTF character code instead of integer.
 
+v1.2.0.2
+-Removed redundant code.
+-Startup should be about twice as fast now.
+
 Future Releases
 -Support for multiple controllers at once.
 -Support for different controller types.
