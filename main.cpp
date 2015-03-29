@@ -10,14 +10,13 @@ sf::CircleShape bA(15), bB(15), bX(15), bY(15);
 sf::Clock ubgTimer;
 sf::Vector2i windowPosition;
 sf::VideoMode desktop;
-sf::Uint8 intR, intG, intB;
 
 std::ifstream bg;
 std::ofstream keep;
 
 float dX, dY;
 bool l, r, left, right, up, down, a, b, x, y, sel, st;
-short unsigned int i, controllerPort, framesPerSecond;
+short unsigned int i, controllerPort, framesPerSecond, intR, intG, intB;
 
 
 void readSettings()
@@ -59,6 +58,8 @@ void readSettings()
 		intB = 255;
 
 		controllerPort = 0;
+
+		framesPerSecond = 60;
 
 		MessageBox(NULL, (LPCWSTR)L"Settings.txt not found, using defaults.", (LPCWSTR)L"Resource Missing", MB_ICONEXCLAMATION);
 

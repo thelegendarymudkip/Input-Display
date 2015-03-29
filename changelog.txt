@@ -37,6 +37,10 @@ v1.2
 -Significantly lower CPU usage (Now almost negligible)
 -Can now change FPS, within reason.
 
+v1.2.0.1
+-Fixed bug where not having a settings file meant program ran as fast as possible.
+-Fixed bug where input file would get interpreted as a UTF character code instead of integer.
+
 Future Releases
 -Support for multiple controllers at once.
 -Support for different controller types.
