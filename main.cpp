@@ -145,32 +145,31 @@ void initWindow()
 
 void getInput()
 {
+	sf::Joystick::update();
 
 	if (sf::Joystick::isConnected(controllerPort))
 	{
-
-		x = sf::Joystick::isButtonPressed(controllerPort, 0);
-		a = sf::Joystick::isButtonPressed(controllerPort, 1);
-		b = sf::Joystick::isButtonPressed(controllerPort, 2);
-		y = sf::Joystick::isButtonPressed(controllerPort, 3);
-		l = sf::Joystick::isButtonPressed(controllerPort, 6);
-		r = sf::Joystick::isButtonPressed(controllerPort, 7);
-		sel = sf::Joystick::isButtonPressed(controllerPort, 8);
-		st = sf::Joystick::isButtonPressed(controllerPort, 9);
+		if (sf::Joystick::getButtonCount(controllerPort)>=10)
+		{
+			x = sf::Joystick::isButtonPressed(controllerPort, 0);
+			a = sf::Joystick::isButtonPressed(controllerPort, 1);
+			b = sf::Joystick::isButtonPressed(controllerPort, 2);
+			y = sf::Joystick::isButtonPressed(controllerPort, 3);
+			l = sf::Joystick::isButtonPressed(controllerPort, 6);
+			r = sf::Joystick::isButtonPressed(controllerPort, 7);
+			sel = sf::Joystick::isButtonPressed(controllerPort, 8);
+			st = sf::Joystick::isButtonPressed(controllerPort, 9);
+		}
 
 		if (sf::Joystick::hasAxis(controllerPort, sf::Joystick::X))
-		{
-
 			dX = sf::Joystick::getAxisPosition(controllerPort, sf::Joystick::X);
-
-		}
+		else
+			dX = 0;
 
 		if (sf::Joystick::hasAxis(controllerPort, sf::Joystick::Y))
-		{
-
 			dY = sf::Joystick::getAxisPosition(controllerPort, sf::Joystick::Y);
-
-		}
+		else
+			dY = 0;
 
 	}
 

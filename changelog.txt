@@ -45,8 +45,10 @@ v1.2.0.2
 -Removed redundant code.
 -Startup should be about twice as fast now.
 
+v1.2.0.3
+-Added some extra checks to prevent some crashes.
+
 Future Releases
 -Support for multiple controllers at once.
 -Support for different controller types.
 -Update background colour and controller port by frontend.
--Change the background colour from a frontend instead of file.
