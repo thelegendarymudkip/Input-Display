@@ -48,6 +48,9 @@ v1.2.0.2
 v1.2.0.3
 -Added some extra checks to prevent some crashes.
 
+v1.2.0.4
+-Now loads information in the correct order.
+
 Future Releases
 -Support for multiple controllers at once.
 -Support for different controller types.
