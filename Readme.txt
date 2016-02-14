@@ -1,4 +1,4 @@
----SNES Input Viewer v1.2.0.2---
+---SNES Input Viewer v1.2.0.3---
 -Created by TheLegendaryMudkip-
 
 SNES Input Viewer is a program that allows you to visualize the input from a SNES controller on your monitor.
